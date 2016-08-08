@@ -16,10 +16,10 @@ pipeline = Pipeline([
 
 # Aqui definimos el espacio de parámetros a explorar
 parameters = {
-    'vect__max_df': (0.5, 1.9),
+    'vect__max_df': (0.9, 0.95, 1.0),
     'vect__min_df': (10, 20, 50),
     'vect__max_features': (500, 1000),
-    'vect__ngram_range': ((1, 1), (1, 2)),  # unigramas or bigramas
+    'vect__ngram_range': ((1, 1), (1, 2)),  # unigramas o bigramas
     'cls__C': (0.2, 0.5, 0.7),
     'cls__loss': ('hinge', 'squared_hinge'),
     'cls__max_iter': (500, 1000)

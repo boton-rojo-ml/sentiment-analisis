@@ -46,4 +46,3 @@ vectorizer = CountVectorizer(
     tokenizer=tokenize,
     lowercase=True,
     stop_words=espanol_stopwords)
-
