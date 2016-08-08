@@ -1,2 +1,1 @@
-# sentiment-analisis
-Archivitos para el análisis de documentos
+# Archivitos para el análisis de documentos
