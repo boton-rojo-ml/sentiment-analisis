@@ -1,0 +1,13 @@
+Descripción de las variables de el archivo csv comprimido
+
+datos_raw.csv.gz
+
+columnas      nombre            descripción
+1             S/N               numeración (sin sentido)
+2             id                Identificador del mensaje
+3             create_time       Fecha de creación del mensaje
+4             id_from           Identificador del usuario (emisor del mensaje)
+5             comment           El mensaje en si mismo
+6             like_count        Número de likes que recibió el mensaje
+7             flag              Polaridad (0 -> Negativo, 1 -> Positivo, 2 -> Neutro)
+8             ready             Revisado por un operador (1 -> No, 2 -> Si)
