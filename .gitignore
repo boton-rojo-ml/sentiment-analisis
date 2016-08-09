@@ -87,3 +87,8 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# Datos privados de la empresa
+procesamiento_espanol/privado
+procesamiento_espanol/privado/*
+
