@@ -67,29 +67,30 @@ y_est = cls.predict(X_valid)
 print metricas.confusion_matrix(y_valid, y_est)
 
 # Pasos del procesamiento
-# pipeline = Pipeline([
-#     ('vect', preproc.vectorizer),
-#     ('cls', LinearSVC()),
-# ])
-#
-# # Aqui definimos el espacio de parámetros a explorar
-# parameters = {
-# #    'vect__max_df': (0.9, 0.95, 1.0),
-# #    'vect__min_df': (10, 20, 50),
-# #    'vect__max_features': (1000, 5000),
-# #    'vect__ngram_range': ((1, 1), (1, 2)),  # unigramas o bigramas
-#     'cls__C': (0.2, 0.5, 0.7),
-# #    'cls__loss': ('hinge', 'squared_hinge'),
-# #    'cls__max_iter': (500, 1000)
-# }
-#
+pipeline = Pipeline([
+     ('vect', preproc.vectorizer),
+     ('cls', LinearSVC()),
+    ])
+
+# Aqui definimos el espacio de parámetros a explorar
+parameters = {
+    'vect__max_df': (0.9, 0.95, 1.0),
+    'vect__min_df': (1, 0.05, 0.1),
+    'vect__max_features': (10000, 20000),
+    #'vect__ngram_range': ((1, 1), (1, 2)),  # unigramas o bigramas
+    'cls__C': (0.01, 0.1, 1, 10),
+    'cls__class_weight': ('Balanced', None)
+    #'cls__loss': ('hinge', 'squared_hinge'),
+    #'cls__max_iter': (500, 1000)
+}
+
 # # Aprende la mejor manera
-# grid_search = GridSearchCV(pipeline, parameters, n_jobs=-1, scoring='roc_auc')
-# grid_search.fit(datos_train, polaridad_train)
+grid_search = GridSearchCV(pipeline, parameters, n_jobs=-1, scoring='roc_auc')
+grid_search.fit(datos_train, polaridad_train)
 #
 # # Muestra los parametros seleccionados
-# print grid_search.best_params_
+print grid_search.best_params_
 #
 # # Muestra los resultados con datos de validacion
-# polaridad_estimada = grid_search.predict(datos_valid)
-# metricas.confusion_matrix(polaridad_valid, polaridad_estimada)
+polaridad_estimada = grid_search.predict(datos_valid)
+metricas.confusion_matrix(polaridad_valid, polaridad_estimada)
