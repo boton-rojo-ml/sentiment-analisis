@@ -8,14 +8,12 @@ import os
 import cPickle as pickle
 
 # Para el tratamiento del lenguaje
-from string import punctuation
-from nltk import word_tokenize
 from nltk.corpus import stopwords
-from nltk.stem import SnowballStemmer
 from sklearn.feature_extraction.text import CountVectorizer
 
 # Para el aprendizaje
 from sklearn.svm import LinearSVC
+from sklearn.svm import SVC
 from sklearn.pipeline import Pipeline
 from sklearn.grid_search import GridSearchCV
 from sklearn.cross_validation import StratifiedKFold
@@ -23,36 +21,9 @@ import sklearn.metrics as metricas
 
 # Creamos el tokenizador en español
 espanol_stopwords = stopwords.words('spanish')
-el_stemmer = SnowballStemmer('spanish')
-
-non_words = list(punctuation)
-non_words.extend(['¿', '¡'])
-non_words.extend(map(str, range(10)))
-
-
-def stem_tokens(tokens, stemmer):
-    stemmed = []
-    for item in tokens:
-        stemmed.append(stemmer.stem(item))
-    return stemmed
-
-
-def tokenize(text):
-    text = ' '.join([c for c in text if c not in non_words])
-    tokens = word_tokenize(text)
-
-    # stem
-    try:
-        stems = stem_tokens(tokens, el_stemmer)
-    except Exception as e:
-        print(e)
-        print(text)
-        stems = ['']
-    return stems
 
 vectorizer = CountVectorizer(
     analyzer='word',
-    #  tokenizer=tokenize,
     lowercase=True,
     stop_words=espanol_stopwords)
 
@@ -77,11 +48,10 @@ else:
     X = temp_dir['X']
     vectorizer = temp_dir['vectorizer']
 
-print X.shape
-
-print vectorizer.vocabulary_.keys()
 
 # Separamos 20% para validación
+y = np.where(y > 0, 0, 1)
+
 indices = StratifiedKFold(y, n_folds=5, shuffle=True, random_state=0)
 for tr_i, va_i in indices:
     X_train, X_valid = X[tr_i], X[va_i]
@@ -89,6 +59,12 @@ for tr_i, va_i in indices:
     break
 
 
+cls = LinearSVC()
+
+cls.fit(X_train, y_train)
+y_est = cls.predict(X_valid)
+
+print metricas.confusion_matrix(y_valid, y_est)
 
 # Pasos del procesamiento
 # pipeline = Pipeline([
